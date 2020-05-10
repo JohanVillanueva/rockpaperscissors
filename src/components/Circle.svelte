@@ -1,5 +1,4 @@
 <script>
-  export let icon;
   export let type;
   export let isVersus = false;
   export let isWinner = false;
@@ -111,6 +110,10 @@
     <div class="wave" />
   {/if}
   <div class="circle__image-wrapper">
-    <img class="image" src={icon} alt="paper" draggable="false" />
+    <img
+      class="image"
+      src={`assets/images/icon-${type}.svg`}
+      alt={type}
+      draggable="false" />
   </div>
 </div>
