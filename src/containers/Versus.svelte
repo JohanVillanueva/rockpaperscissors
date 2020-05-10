@@ -1,5 +1,7 @@
 <script>
   import Picker from "./../components/Picker.svelte";
+  export let circlePickedType;
+  let loading = true;
 </script>
 
 <style>
@@ -48,10 +50,10 @@
 
 <div class="versus">
   <div class="versus__picker1">
-    <Picker winner={true} />
+    <Picker winner={true} {circlePickedType} />
   </div>
   <div class="versus__picker2">
-    <Picker />
+    <Picker isLoading={loading} />
   </div>
   <div class="versus__result">
     <div>YOU WIN</div>

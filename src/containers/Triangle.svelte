@@ -1,20 +1,14 @@
 <script>
   import Circle from "./../components/Circle.svelte";
+  import { createEventDispatcher } from "svelte";
 
-  let items = [
-    {
-      icon: "assets/images/icon-paper.svg",
-      type: "paper"
-    },
-    {
-      icon: "assets/images/icon-scissors.svg",
-      type: "scissors"
-    },
-    {
-      icon: "assets/images/icon-rock.svg",
-      type: "rock"
-    }
-  ];
+  let types = ["rock", "paper", "scissors"];
+
+  const dispatcher = createEventDispatcher();
+
+  const circleSelected = circleType => {
+    dispatcher("picked", circleType);
+  };
 </script>
 
 <style>
@@ -63,9 +57,11 @@
 </style>
 
 <div class="triangle">
-  {#each items as item, i}
-    <div class="triangle__item">
-      <Circle {...item} />
+  {#each types as type, i}
+    <div
+      class="triangle__item"
+      on:click|stopPropagation={() => circleSelected(type)}>
+      <Circle {type} />
     </div>
   {/each}
 </div>

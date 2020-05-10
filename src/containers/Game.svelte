@@ -1,6 +1,12 @@
 <script>
   import Versus from "./Versus.svelte";
   import Triangle from "./Triangle.svelte";
+
+  let playerCirclePickedType;
+
+  const handleTrianglePicked = circlePickedType => {
+    playerCirclePickedType = circlePickedType;
+  };
 </script>
 
 <style>
@@ -16,6 +22,9 @@
 </style>
 
 <div class="game">
-  <Triangle />
-  <!-- <Versus /> -->
+  {#if playerCirclePickedType}
+    <Versus circlePickedType={playerCirclePickedType} />
+  {:else}
+    <Triangle on:picked={({ detail }) => handleTrianglePicked(detail)} />
+  {/if}
 </div>
