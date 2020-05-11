@@ -1,6 +1,9 @@
 <script>
+  import { setContext } from "svelte";
   import Versus from "./Versus.svelte";
   import Triangle from "./Triangle.svelte";
+
+  setContext("circleTypes", ["rock", "paper", "scissors"]);
 
   let playerCirclePickedType;
 

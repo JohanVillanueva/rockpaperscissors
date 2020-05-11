@@ -46,6 +46,9 @@
         "result result";
       grid-gap: 10px 40px;
     }
+    .versus__result {
+      margin-top: 0px;
+    }
   }
 
   @media screen and (max-width: 480px) {

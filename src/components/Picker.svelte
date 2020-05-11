@@ -1,12 +1,14 @@
 <script>
+  import { getContext } from "svelte";
   import Circle from "./Circle.svelte";
 
   export let winner = false;
   export let isLoading = false;
-  export let circlePickedType = "rock";
+  const circleTypes = getContext("circleTypes");
+  export let circlePickedType = circleTypes[0];
 
   let playerName = "Player";
-  let circleTypes = ["rock", "paper", "scissors"];
+  let playerScore = 12;
 
   let index = 0;
   let dynamicCircleType = circleTypes[index];
@@ -34,24 +36,39 @@
 
   .picker__name {
     text-transform: uppercase;
-    margin-bottom: 40px;
-    font-size: 1.3em;
+    margin-bottom: 10px;
+    font-size: 1.6em;
     letter-spacing: 2px;
   }
-
+  .picker__score {
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    font-size: 1.5em;
+    letter-spacing: 2px;
+  }
   @media screen and (max-width: 768px) {
     .picker {
       flex-direction: column-reverse;
     }
-    .picker__name {
+    .player_info {
       margin-bottom: 0;
       margin-top: 40px;
+      flex-direction: column;
+    }
+    .picker__name {
+      margin-bottom: 10px;
+    }
+    .picker__score {
+      margin-bottom: 10px;
     }
   }
 </style>
 
 <div class="picker">
-  <span class="picker__name">{playerName}</span>
+  <div class="player_info">
+    <div class="picker__name">{playerName}</div>
+    <div class="picker__score">{playerScore}</div>
+  </div>
   {#if isLoading}
     <Circle type={dynamicCircleType} isVersus={true} />
   {:else}

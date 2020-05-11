@@ -4,13 +4,11 @@
 
 <style>
   .header {
-    border-radius: 10px;
-    border: 2px solid var(--borders-color);
     padding: 15px;
     display: flex;
     align-items: center;
     box-sizing: border-box;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     font-size: 16px;
   }
@@ -38,5 +36,4 @@
   <div class="header__logo">
     <img src="assets/images/logo.svg" alt="Logo" />
   </div>
-  <Score />
 </div>

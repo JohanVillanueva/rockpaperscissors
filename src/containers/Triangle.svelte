@@ -1,8 +1,8 @@
 <script>
   import Circle from "./../components/Circle.svelte";
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, getContext } from "svelte";
 
-  let types = ["rock", "paper", "scissors"];
+  let types = getContext("circleTypes");
 
   const dispatcher = createEventDispatcher();
 
