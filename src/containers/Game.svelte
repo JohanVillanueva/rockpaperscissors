@@ -1,5 +1,6 @@
 <script>
   import { setContext } from "svelte";
+  import { game } from "../@store";
   import Versus from "./Versus.svelte";
   import Triangle from "./Triangle.svelte";
 
@@ -29,11 +30,9 @@
 </style>
 
 <div class="game">
-  {#if playerCirclePickedType}
-    <Versus
-      circlePickedType={playerCirclePickedType}
-      on:playAgain={() => handlePlayAgain()} />
+  {#if $game.players.host.typePicked}
+    <Versus on:playAgain={() => handlePlayAgain()} />
   {:else}
-    <Triangle on:picked={({ detail }) => handleTrianglePicked(detail)} />
+    <Triangle />
   {/if}
 </div>

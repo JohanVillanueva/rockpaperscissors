@@ -1,13 +1,12 @@
 <script>
+  import { getContext } from "svelte";
+  import { game } from "../@store";
   import Circle from "./../components/Circle.svelte";
-  import { createEventDispatcher, getContext } from "svelte";
 
   let types = getContext("circleTypes");
 
-  const dispatcher = createEventDispatcher();
-
   const circleSelected = circleType => {
-    dispatcher("picked", circleType);
+    game.setTypePicked(circleType);
   };
 </script>
 

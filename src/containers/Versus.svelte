@@ -1,7 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import { game } from "../@store";
   import Picker from "./../components/Picker.svelte";
-  export let circlePickedType;
   let loading = true;
 
   const dispatch = createEventDispatcher();
@@ -60,16 +60,18 @@
 
 <div class="versus">
   <div class="versus__picker1">
-    <Picker winner={true} {circlePickedType} />
+    <Picker playerInfo={$game.players.host} />
   </div>
   <div class="versus__picker2">
-    <Picker isLoading={loading} />
+    <Picker
+      playerInfo={$game.players.opponent}
+      isLoading={!$game.players.opponent.typePicked} />
   </div>
   <div class="versus__result">
     <div>YOU WIN</div>
     <button
       class="btn btn--large versus__result__play-again"
-      on:click={() => playAgain()}>
+      on:click={game.playAgain}>
       Play again
     </button>
   </div>

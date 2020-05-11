@@ -2,23 +2,18 @@
   import { getContext } from "svelte";
   import Circle from "./Circle.svelte";
 
-  export let winner = false;
+  export let playerInfo;
   export let isLoading = false;
-  const circleTypes = getContext("circleTypes");
-  export let circlePickedType = circleTypes[0];
 
-  let playerName = "Player";
-  let playerScore = 12;
+  const circleTypes = getContext("circleTypes");
+  const CIRCLE_TYPE_ANIMATION_TIME = 150;
 
   let index = 0;
   let dynamicCircleType = circleTypes[index];
-  const CIRCLE_TYPE_ANIMATION_TIME = 150;
 
   const loadDynamicCircleType = () => {
     dynamicCircleType = circleTypes[index++];
-
     if (index >= circleTypes.length) index = 0;
-
     isLoading && setTimeout(loadDynamicCircleType, CIRCLE_TYPE_ANIMATION_TIME);
   };
 
@@ -66,12 +61,15 @@
 
 <div class="picker">
   <div class="player_info">
-    <div class="picker__name">{playerName}</div>
-    <div class="picker__score">{playerScore}</div>
+    <div class="picker__name">{playerInfo.name}</div>
+    <div class="picker__score">{playerInfo.score}</div>
   </div>
   {#if isLoading}
     <Circle type={dynamicCircleType} isVersus={true} />
   {:else}
-    <Circle type={circlePickedType} isVersus={true} isWinner={winner} />
+    <Circle
+      type={playerInfo.typePicked}
+      isVersus={true}
+      isWinner={playerInfo.isWinner} />
   {/if}
 </div>
