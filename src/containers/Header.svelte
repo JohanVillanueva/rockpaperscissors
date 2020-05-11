@@ -20,7 +20,6 @@
   @media screen and (max-width: 768px) {
     .header {
       font-size: 12px;
-      /* height: 120px; */
     }
   }
   @media screen and (max-width: 480px) {

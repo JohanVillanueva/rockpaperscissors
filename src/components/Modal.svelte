@@ -81,6 +81,10 @@
     display: none;
   }
 
+  .link__room {
+    font-size: 1.5em;
+  }
+
   @media screen and (max-width: 480px) {
     .modal.open {
       width: 100%;
@@ -119,13 +123,13 @@
 <div class="overlay" class:open={isOpen} />
 <div class="modal" class:open={isOpen}>
   <div class="modal__header">
-    <h2 class="modal__header__title">rules</h2>
+    <h2 class="modal__header__title">invite</h2>
     <span class="close-btn" on:click={handleCloseModal}>
       <img src="assets/images/icon-close.svg" alt="X close" />
     </span>
   </div>
   <div class="modal__body">
-    <img src="assets/images/image-rules.svg" alt="rules" />
+    <span class="link__room">https://rpsgame/12321</span>
     <span class="close-btn" on:click={handleCloseModal}>
       <img src="assets/images/icon-close.svg" alt="X close" />
     </span>

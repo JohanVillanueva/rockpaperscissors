@@ -74,14 +74,14 @@
     max-width: 750px;
   }
 
-  .rules-btn {
+  .invite-btn {
     position: absolute;
     bottom: 20px;
     right: 20px;
   }
 
   @media screen and (max-width: 768px) {
-    .rules-btn {
+    .invite-btn {
       position: relative;
       margin: auto;
       bottom: unset;
@@ -107,9 +107,9 @@
     <Header />
     <Game />
     <button
-      class="btn btn--outline rules-btn"
+      class="btn btn--outline invite-btn"
       on:click={() => (modalIsOpen = true)}>
-      RULES
+      INVITE
     </button>
   </main>
 </div>
