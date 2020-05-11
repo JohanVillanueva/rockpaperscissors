@@ -1,7 +1,14 @@
 <script>
+  import { createEventDispatcher } from "svelte";
   import Picker from "./../components/Picker.svelte";
   export let circlePickedType;
   let loading = true;
+
+  const dispatch = createEventDispatcher();
+
+  const playAgain = () => {
+    dispatch("playAgain");
+  };
 </script>
 
 <style>
@@ -57,7 +64,9 @@
   </div>
   <div class="versus__result">
     <div>YOU WIN</div>
-    <button class="btn btn--large versus__result__play-again">
+    <button
+      class="btn btn--large versus__result__play-again"
+      on:click={() => playAgain()}>
       Play again
     </button>
   </div>

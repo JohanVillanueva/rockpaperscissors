@@ -7,6 +7,10 @@
   const handleTrianglePicked = circlePickedType => {
     playerCirclePickedType = circlePickedType;
   };
+
+  const handlePlayAgain = () => {
+    playerCirclePickedType = null;
+  };
 </script>
 
 <style>
@@ -23,7 +27,9 @@
 
 <div class="game">
   {#if playerCirclePickedType}
-    <Versus circlePickedType={playerCirclePickedType} />
+    <Versus
+      circlePickedType={playerCirclePickedType}
+      on:playAgain={() => handlePlayAgain()} />
   {:else}
     <Triangle on:picked={({ detail }) => handleTrianglePicked(detail)} />
   {/if}
