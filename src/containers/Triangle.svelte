@@ -5,8 +5,11 @@
   import Circle from "./../components/Circle.svelte";
   const DURATION = 10;
   let types = getContext("circleTypes");
+  let socket = getContext("socket");
+
   const circleSelected = circleType => {
     game.setTypePicked(circleType);
+    socket.emit("circleSelected", $game.players.host);
   };
   const handleTimeOut = () => {
     circleSelected(types[getRandomInt(0, types.length)]);

@@ -4,18 +4,20 @@ const INITIAL_GAME_STATE = {
   id: "",
   players: {
     host: {
-      id: "",
-      name: "Johan",
+      id: 0,
+      name: "",
       score: 0,
       typePicked: "",
       isWinner: false,
+      room: "0",
     },
     opponent: {
-      id: "",
-      name: "Cristhian",
+      id: 0,
+      name: "",
       score: 0,
       typePicked: "",
       isWinner: false,
+      room: "0",
     },
   },
 };
@@ -37,6 +39,50 @@ function createGameStore() {
           host = {
             ...host,
             score: opponent.host + 1,
+          };
+        }
+        return {
+          ...game,
+          players: {
+            host,
+            opponent,
+          },
+        };
+      }),
+    setId: (isOpponent = false) =>
+      update((game) => {
+        let { opponent, host } = game.players;
+        if (isOpponent) {
+          opponent = {
+            ...opponent,
+            id: Math.floor(Math.random() * 10000),
+          };
+        } else {
+          host = {
+            ...host,
+            id: Math.floor(Math.random() * 10000),
+          };
+        }
+        return {
+          ...game,
+          players: {
+            host,
+            opponent,
+          },
+        };
+      }),
+    setRoom: (room, isOpponent = false) =>
+      update((game) => {
+        let { opponent, host } = game.players;
+        if (isOpponent) {
+          opponent = {
+            ...opponent,
+            room: room,
+          };
+        } else {
+          host = {
+            ...host,
+            room: room,
           };
         }
         return {
@@ -107,10 +153,12 @@ function createGameStore() {
           host: {
             ...game.players.host,
             typePicked: "",
+            isWinner: false,
           },
           opponent: {
             ...game.players.opponent,
             typePicked: "",
+            isWinner: false,
           },
         },
       })),
