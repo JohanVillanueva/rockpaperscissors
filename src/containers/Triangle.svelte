@@ -4,9 +4,11 @@
   import Circle from "./../components/Circle.svelte";
 
   let types = getContext("circleTypes");
+  let socket = getContext("socket");
 
   const circleSelected = circleType => {
     game.setTypePicked(circleType);
+    socket.emit("circleSelected", $game.players.host);
   };
 </script>
 

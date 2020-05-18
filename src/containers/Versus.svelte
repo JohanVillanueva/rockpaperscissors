@@ -1,14 +1,42 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, getContext, onDestroy } from "svelte";
   import { game } from "../@store";
   import Picker from "./../components/Picker.svelte";
-  let loading = true;
 
   const dispatch = createEventDispatcher();
+  let socket = getContext("socket");
 
   const playAgain = () => {
+    socket.emit("playAgain", $game.players.host.room);
+    game.playAgain();
     dispatch("playAgain");
   };
+
+  socket.on("circleTypeSelected", function(data) {
+    data.forEach(function(player) {
+      if (player.id !== $game.players.host.id) {
+        game.setTypePicked(player.typePicked, true);
+        getWinner(player.typePicked);
+      }
+    });
+  });
+
+  const getWinner = opponentTypePicked => {
+    if ($game.players.host.typePicked == "rock") {
+      if (opponentTypePicked == "paper") game.setWinner(true);
+      if (opponentTypePicked == "scissors") game.setWinner(false);
+    } else if ($game.players.host.typePicked == "paper") {
+      if (opponentTypePicked == "scissors") game.setWinner(true);
+      if (opponentTypePicked == "rock") game.setWinner(false);
+    } else if ($game.players.host.typePicked == "scissors") {
+      if (opponentTypePicked == "rock") game.setWinner(true);
+      if (opponentTypePicked == "paper") game.setWinner(true);
+    }
+  };
+
+  onDestroy(() => {
+    socket.off("circleTypeSelected");
+  });
 </script>
 
 <style>
@@ -71,7 +99,7 @@
     <div>YOU WIN</div>
     <button
       class="btn btn--large versus__result__play-again"
-      on:click={game.playAgain}>
+      on:click={() => playAgain()}>
       Play again
     </button>
   </div>
