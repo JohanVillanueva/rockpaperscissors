@@ -3,12 +3,13 @@
 
   export let seconds = 0;
   export let timerInterval = null;
+  export let showFromSecond = 5;
   const dispatch = createEventDispatcher();
 
   const timeOut = () => {
     dispatch("timeOut");
   };
-  function removeinterval() {
+  function removeInterval() {
     clearInterval(timerInterval);
   }
 
@@ -16,14 +17,14 @@
     timerInterval = setInterval(() => {
       seconds--;
       if (seconds <= 0) {
-        removeinterval();
+        removeInterval();
         timeOut();
       }
     }, 1000);
   }
   startTimer();
   onDestroy(() => {
-    removeinterval();
+    removeInterval();
   });
 </script>
 
@@ -44,6 +45,6 @@
   }
 </style>
 
-{#if seconds <= 5}
+{#if seconds <= showFromSecond}
   <span class="timer">{seconds}</span>
 {/if}
