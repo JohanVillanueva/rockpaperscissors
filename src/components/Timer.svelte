@@ -31,7 +31,19 @@
   .timer {
     font-size: 48px;
     color: white;
+    animation: scaleup 0.5s alternate infinite ease-in;
+    transform-origin: 50% 50%;
+  }
+  @keyframes scaleup {
+    0% {
+      transform: scale(0.4);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 </style>
 
-<span class="timer">{seconds}</span>
+{#if seconds <= 5}
+  <span class="timer">{seconds}</span>
+{/if}

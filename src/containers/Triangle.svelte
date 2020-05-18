@@ -3,6 +3,7 @@
   import { getContext } from "svelte";
   import { game } from "../@store";
   import Circle from "./../components/Circle.svelte";
+  const DURATION = 10;
   let types = getContext("circleTypes");
   const circleSelected = circleType => {
     game.setTypePicked(circleType);
@@ -49,16 +50,8 @@
     justify-content: center;
     padding-bottom: 72px;
     box-sizing: border-box;
-    animation: crescendo 0.5s alternate infinite ease-in;
   }
-  @keyframes crescendo {
-    0% {
-      transform: scale(0.8);
-    }
-    100% {
-      transform: scale(1.5);
-    }
-  }
+
   .triangle__item:first-child,
   .triangle__item:nth-child(2) {
     top: calc(var(--circle-radio) * -1);
@@ -85,7 +78,7 @@
     </div>
   {/each}
   <div class="triangle__timer">
-    <Timer seconds={5} on:timeOut={() => handleTimeOut()} />
+    <Timer seconds={DURATION} on:timeOut={() => handleTimeOut()} />
   </div>
 
 </div>
