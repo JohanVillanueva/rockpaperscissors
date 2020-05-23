@@ -1,6 +1,6 @@
 .btn {
-  border-radius: 8px;
-  padding: 12px 0;
+  border-radius: 5px;
+  padding: 12px 24px;
   text-transform: uppercase;
   background-color: white;
   min-width: 150px;
@@ -34,4 +34,18 @@
 
 .btn--outline:hover {
   background-color: rgba(255, 255, 255, 0.1);
+}
+
+input {
+  border: 1px solid white;
+  background: transparent;
+  border-radius: 5px;
+  padding: 10px;
+  color: white;
+  text-transform: uppercase;
+  font-size: 16px;
+  letter-spacing: 2px;
+  min-width: 180px;
+  font-family: "Barlow Semi Condensed", sans-serif;
+  box-sizing: border-box;
 }
