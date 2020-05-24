@@ -5,7 +5,7 @@ const INITIAL_GAME_STATE = {
   players: {
     host: {
       id: "",
-      name: "",
+      name: "Johan",
       score: 0,
       typePicked: "",
       isWinner: false,
