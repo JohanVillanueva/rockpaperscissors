@@ -1,13 +1,18 @@
 <script>
+  import Timer from "./../components/Timer.svelte";
+  import { getContext } from "svelte";
+  import { game } from "../@store";
   import Circle from "./../components/Circle.svelte";
-  import { createEventDispatcher } from "svelte";
-
-  let types = ["rock", "paper", "scissors"];
-
-  const dispatcher = createEventDispatcher();
-
+  const DURATION = 10;
+  let types = getContext("circleTypes");
   const circleSelected = circleType => {
-    dispatcher("picked", circleType);
+    game.setTypePicked(circleType);
+  };
+  const handleTimeOut = () => {
+    circleSelected(types[getRandomInt(0, types.length)]);
+  };
+  const getRandomInt = (min, max) => {
+    return Math.floor(Math.random() * (max - min)) + min;
   };
 </script>
 
@@ -38,6 +43,14 @@
     transform-origin: 0;
     --circle-radio: calc(var(--circle-size) / 2);
   }
+  .triangle__timer {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 72px;
+    box-sizing: border-box;
+  }
 
   .triangle__item:first-child,
   .triangle__item:nth-child(2) {
@@ -64,4 +77,8 @@
       <Circle {type} />
     </div>
   {/each}
+  <div class="triangle__timer">
+    <Timer seconds={DURATION} on:timeOut={() => handleTimeOut()} />
+  </div>
+
 </div>
