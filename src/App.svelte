@@ -2,6 +2,12 @@
   import Home from "./containers/Home.svelte";
   import Game from "./containers/Game.svelte";
   import Header from "./containers/Header.svelte";
+
+  let inGame = false;
+
+  const handleStartplay = () => {
+    inGame = true;
+  };
 </script>
 
 <style>
@@ -12,7 +18,7 @@
       hsl(237, 49%, 15%)
     );
     --circle-background: #e2e2e2;
-    --circle-border-width: 15px;
+    --circle-border-width: 10px;
     --circle-size: 200px;
     --triangle-width: calc(var(--circle-size) + 60px);
     --triangle-height: calc(var(--circle-size) + 20px);
@@ -87,7 +93,10 @@
 <div class="wrapper">
   <main>
     <Header />
-    <Game />
-    <!-- <Home /> -->
+    {#if inGame}
+      <Game />
+    {:else}
+      <Home on:play={() => handleStartplay()} />
+    {/if}
   </main>
 </div>

@@ -38,18 +38,18 @@
   }
 
   .circle.paper {
+    box-shadow: 0px 5px 0px -1px #2945c0;
     background: var(--paper-gradient);
-    box-shadow: 0px 6px 0px -1px #2945c0;
   }
 
   .circle.rock {
+    box-shadow: 0px 5px 0px -1px #961734;
     background: var(--rock-gradient);
-    box-shadow: 0px 6px 0px -1px #961734;
   }
 
   .circle.scissors {
+    box-shadow: 0px 5px 0px -1px #c66c1d;
     background: var(--scissors-gradient);
-    box-shadow: 0px 6px 0px -1px #c66c1d;
   }
 
   .circle .circle__image-wrapper {
@@ -61,7 +61,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    box-shadow: inset 0px 5px 0px 0px #bac0d7;
+    box-shadow: inset 0px 4px 0px 0px #bac0d7;
   }
 
   .circle .circle__image-wrapper .image {

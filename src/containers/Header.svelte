@@ -11,11 +11,11 @@
     justify-content: center;
     width: 100%;
     font-size: 16px;
+    text-align: center;
   }
 
   .header__logo img {
     height: 100%;
-    min-height: 80px;
     text-align: center;
   }
 
@@ -24,6 +24,7 @@
     letter-spacing: 2px;
     margin-top: 5px;
     text-transform: uppercase;
+    text-align: center;
   }
 
   @media screen and (max-width: 768px) {
@@ -33,7 +34,7 @@
   }
   @media screen and (max-width: 480px) {
     .header .header__logo {
-      height: 80%;
+      height: 65%;
       margin-top: auto;
       margin-bottom: auto;
     }
