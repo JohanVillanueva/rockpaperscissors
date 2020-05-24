@@ -66,7 +66,13 @@
 
   .circle .circle__image-wrapper .image {
     opacity: 0.9;
-    height: 52%;
+    height: 48%;
+  }
+  .circle.paper .circle__image-wrapper .image {
+    height: 15%;
+  }
+  .circle.scissors .circle__image-wrapper .image {
+    height: 45%;
   }
 
   .wave {

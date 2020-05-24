@@ -15,6 +15,15 @@
 
   .header__logo img {
     height: 100%;
+    min-height: 80px;
+    text-align: center;
+  }
+
+  .header__logo__tagline {
+    color: #ffbebe;
+    letter-spacing: 2px;
+    margin-top: 5px;
+    text-transform: uppercase;
   }
 
   @media screen and (max-width: 768px) {
@@ -33,6 +42,8 @@
 
 <div class="header">
   <div class="header__logo">
-    <img src="assets/images/logo.svg" alt="Logo" />
+    <img src="assets/images/logo.svg" alt="Rock, paper, scissors!" />
+    <div class="header__logo__tagline">Rock, paper, scissors!</div>
   </div>
+
 </div>

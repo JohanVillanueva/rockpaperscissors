@@ -29,6 +29,7 @@
     margin-bottom: 90px;
     display: block;
     text-align: center;
+    margin-top: 25px;
   }
 
   .home__form {

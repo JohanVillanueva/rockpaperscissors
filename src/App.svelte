@@ -1,10 +1,7 @@
 <script>
   import Home from "./containers/Home.svelte";
   import Game from "./containers/Game.svelte";
-  import Modal from "./components/Modal.svelte";
   import Header from "./containers/Header.svelte";
-
-  let modalIsOpen = false;
 </script>
 
 <style>
@@ -87,11 +84,10 @@
   }
 </style>
 
-<Modal isOpen={modalIsOpen} on:close={() => (modalIsOpen = false)} />
 <div class="wrapper">
   <main>
     <Header />
-    <!-- <Game /> -->
-    <Home />
+    <Game />
+    <!-- <Home /> -->
   </main>
 </div>
