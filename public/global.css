@@ -36,6 +36,11 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+.btn[disabled] {
+  pointer-events: none;
+  background: #bebebe;
+}
+
 input {
   border: 1px solid white;
   background: transparent;

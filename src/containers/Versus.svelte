@@ -13,6 +13,7 @@
 
 <style>
   .versus {
+    margin-top: 25px;
     display: grid;
     grid-template-areas: "picker1 result picker2";
     grid-gap: 35px;

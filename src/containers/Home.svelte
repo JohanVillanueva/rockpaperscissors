@@ -1,11 +1,17 @@
 <script>
+  import { game } from "./../@store";
+  import { createEventDispatcher } from "svelte";
+
   const WAITING_MODE = "waiting";
   const CREATION_MODE = "create";
   const READY_TO_PLAY_MODE = "ready";
 
   let mode = CREATION_MODE;
+  let nickname = "";
   let loading = false;
   let gameInvitationLink = "https://rps/sdd3c";
+
+  const dispatch = createEventDispatcher();
 
   const createRoom = () => {
     loading = true;
@@ -16,6 +22,10 @@
         mode = READY_TO_PLAY_MODE;
       }, 3000);
     }, 3000);
+  };
+
+  const goPlay = () => {
+    dispatch("play");
   };
 </script>
 
@@ -111,18 +121,25 @@
       placeholder="Nickname"
       maxlength="15"
       autocomplete="off"
+      bind:value={nickname}
       class="home__form__input" />
 
     {#if mode === CREATION_MODE}
       <button
         class="btn btn--large home__form__button"
-        disabled={loading}
+        disabled={loading || !nickname}
         on:click={() => createRoom()}>
         {#if loading}Creating...{:else}Create room{/if}
       </button>
+    {:else if mode === WAITING_MODE}
+      <button class="btn btn--large home__form__button" disabled={loading}>
+        Waiting...
+      </button>
     {:else}
-      <button class="btn btn--large home__form__button">
-        {#if mode === WAITING_MODE}Waiting...{:else}Play!{/if}
+      <button
+        class="btn btn--large home__form__button"
+        on:click={() => goPlay()}>
+        Play!
       </button>
     {/if}
 
