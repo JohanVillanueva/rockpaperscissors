@@ -6,7 +6,7 @@
   export let isLoading = false;
 
   const circleTypes = getContext("circleTypes");
-  const CIRCLE_TYPE_ANIMATION_TIME = 150;
+  const CIRCLE_TYPE_ANIMATION_TIME = 100;
 
   let index = 0;
   let dynamicCircleType = circleTypes[index];
@@ -32,7 +32,7 @@
   .picker__name {
     text-transform: uppercase;
     margin-bottom: 10px;
-    font-size: 1.6em;
+    font-size: 1.3em;
     letter-spacing: 2px;
   }
   .picker__score {

@@ -1,9 +1,13 @@
 <script>
+  import Home from "./containers/Home.svelte";
   import Game from "./containers/Game.svelte";
-  import Modal from "./components/Modal.svelte";
   import Header from "./containers/Header.svelte";
 
-  let modalIsOpen = false;
+  let inGame = false;
+
+  const handleStartplay = () => {
+    inGame = true;
+  };
 </script>
 
 <style>
@@ -14,7 +18,7 @@
       hsl(237, 49%, 15%)
     );
     --circle-background: #e2e2e2;
-    --circle-border-width: 15px;
+    --circle-border-width: 10px;
     --circle-size: 200px;
     --triangle-width: calc(var(--circle-size) + 60px);
     --triangle-height: calc(var(--circle-size) + 20px);
@@ -39,7 +43,6 @@
   :global(body) {
     margin: 0;
     height: 100vh;
-    /* max-height: 100%; */
     width: 100%;
     max-width: 100%;
     background: var(--background);
@@ -70,23 +73,9 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     width: 100%;
     max-width: 750px;
-  }
-
-  .invite-btn {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-  }
-
-  @media screen and (max-width: 768px) {
-    .invite-btn {
-      position: relative;
-      margin: auto;
-      bottom: unset;
-      right: unset;
-    }
   }
 
   @media screen and (max-width: 600px) {
@@ -101,15 +90,13 @@
   }
 </style>
 
-<Modal isOpen={modalIsOpen} on:close={() => (modalIsOpen = false)} />
 <div class="wrapper">
   <main>
     <Header />
-    <Game />
-    <button
-      class="btn btn--outline invite-btn"
-      on:click={() => (modalIsOpen = true)}>
-      INVITE
-    </button>
+    {#if inGame}
+      <Game />
+    {:else}
+      <Home on:play={() => handleStartplay()} />
+    {/if}
   </main>
 </div>
