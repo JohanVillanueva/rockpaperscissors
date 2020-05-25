@@ -1,5 +1,5 @@
 <script>
-  import { setContext } from "svelte";
+  import { setContext, onDestroy } from "svelte";
   import { game } from "../@store";
   import Versus from "./Versus.svelte";
   import Triangle from "./Triangle.svelte";
@@ -12,14 +12,25 @@
   const urlParams = new URLSearchParams(queryString);
   room = urlParams.get("room").toString();
 
+  game.setRoom(room);
+  game.setId();
+
   let socket = io.connect("http://localhost:8080", { forceNew: true });
-  socket.emit("join_room", room);
+  socket.on("joinRoomResponse", function(data) {
+    const { code, message } = data;
+    if (code === "ERROR") {
+      alert(message);
+    }
+  });
+
+  socket.on("gameReady", function(data) {
+    console.log(data);
+  });
+
+  socket.emit("joinRoom", $game.players.host);
 
   setContext("circleTypes", ["rock", "paper", "scissors"]);
   setContext("socket", socket);
-
-  game.setRoom(room);
-  game.setId();
 
   const handleTrianglePicked = circlePickedType => {
     playerCirclePickedType = circlePickedType;
@@ -27,6 +38,10 @@
 
   const handlePlayAgain = () => {
     playerCirclePickedType = null;
+  };
+
+  window.onbeforeunload = function() {
+    socket.emit("exitGame", $game.players.host);
   };
 </script>
 

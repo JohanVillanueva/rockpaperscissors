@@ -38,7 +38,7 @@ function createGameStore() {
         } else {
           host = {
             ...host,
-            score: opponent.host + 1,
+            score: host.score + 1,
           };
         }
         return {
@@ -55,12 +55,12 @@ function createGameStore() {
         if (isOpponent) {
           opponent = {
             ...opponent,
-            id: Math.floor(Math.random() * 10000),
+            id: Math.floor(Math.random() * 10000) + 1,
           };
         } else {
           host = {
             ...host,
-            id: Math.floor(Math.random() * 10000),
+            id: Math.floor(Math.random() * 10000) + 1,
           };
         }
         return {

@@ -5,37 +5,38 @@
 
   const dispatch = createEventDispatcher();
   let socket = getContext("socket");
+  let versusResult = "";
 
   const playAgain = () => {
-    socket.emit("playAgain", $game.players.host.room);
+    socket.emit("playAgain", $game.players.host);
     game.playAgain();
     dispatch("playAgain");
   };
 
-  socket.on("circleTypeSelected", function(data) {
-    data.forEach(function(player) {
+  socket.on("circleSelectedResponse", function(data) {
+    data.players.forEach(function(player) {
       if (player.id !== $game.players.host.id) {
         game.setTypePicked(player.typePicked, true);
-        getWinner(player.typePicked);
       }
     });
+
+    if (data.idWinner === 0) {
+      versusResult = "DRAW";
+    } else {
+      if (data.idWinner === $game.players.host.id) {
+        versusResult = "YOU WIN";
+        game.setWinner(false);
+        game.incrementScore(false);
+      } else {
+        versusResult = "YOU LOST";
+        game.setWinner(true);
+        game.incrementScore(true);
+      }
+    }
   });
 
-  const getWinner = opponentTypePicked => {
-    if ($game.players.host.typePicked == "rock") {
-      if (opponentTypePicked == "paper") game.setWinner(true);
-      if (opponentTypePicked == "scissors") game.setWinner(false);
-    } else if ($game.players.host.typePicked == "paper") {
-      if (opponentTypePicked == "scissors") game.setWinner(true);
-      if (opponentTypePicked == "rock") game.setWinner(false);
-    } else if ($game.players.host.typePicked == "scissors") {
-      if (opponentTypePicked == "rock") game.setWinner(true);
-      if (opponentTypePicked == "paper") game.setWinner(true);
-    }
-  };
-
   onDestroy(() => {
-    socket.off("circleTypeSelected");
+    socket.off("circleSelectedResponse");
   });
 </script>
 
@@ -96,7 +97,7 @@
       isLoading={!$game.players.opponent.typePicked} />
   </div>
   <div class="versus__result">
-    <div>YOU WIN</div>
+    <div>{versusResult}</div>
     <button
       class="btn btn--large versus__result__play-again"
       on:click={() => playAgain()}>
