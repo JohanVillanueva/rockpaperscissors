@@ -1,13 +1,23 @@
 <script>
+  import { onMount, onDestroy } from "svelte";
   import Home from "./containers/Home.svelte";
   import Game from "./containers/Game.svelte";
   import Header from "./containers/Header.svelte";
+  import { socketService } from "./services/socket";
 
   let inGame = false;
 
   const handleStartplay = () => {
     inGame = true;
   };
+
+  onMount(async () => {
+    socketService.connect();
+  });
+
+  onDestroy(async () => {
+    socketService.disconnect();
+  });
 </script>
 
 <style>

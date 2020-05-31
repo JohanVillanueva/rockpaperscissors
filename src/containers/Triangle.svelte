@@ -3,10 +3,14 @@
   import { getContext } from "svelte";
   import { game } from "../@store";
   import Circle from "./../components/Circle.svelte";
+  import { socketService, GAME_EVENTS } from "../services/socket";
+
   const DURATION = 10;
   let types = getContext("circleTypes");
+
   const circleSelected = circleType => {
     game.setTypePicked(circleType);
+    socketService.emit(GAME_EVENTS.USER_PICKED, $game.players.host);
   };
   const handleTimeOut = () => {
     circleSelected(types[getRandomInt(0, types.length)]);

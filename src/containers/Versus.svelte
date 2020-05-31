@@ -1,14 +1,49 @@
 <script>
-  import { createEventDispatcher } from "svelte";
+  import { createEventDispatcher, getContext, onDestroy } from "svelte";
   import { game } from "../@store";
   import Picker from "./../components/Picker.svelte";
-  let loading = true;
+  import { socketService, GAME_EVENTS } from "../services/socket";
 
   const dispatch = createEventDispatcher();
+  const GAME_RESULTS = {
+    DRAW: "DRAW",
+    YOU_WIN: "YOU WIN",
+    YOU_LOST: "YOU LOST"
+  };
+
+  let versusResult = "";
 
   const playAgain = () => {
+    socketService.emit(GAME_EVENTS.PLAY_AGAIN, $game.players.host);
+    game.playAgain();
     dispatch("playAgain");
   };
+
+  socketService.socket.on(GAME_EVENTS.GAME_RESULT_READY, data => {
+    data.players.forEach(function(player) {
+      if (player.id !== $game.players.host.id) {
+        game.setTypePicked(player.typePicked, true);
+      }
+    });
+
+    if (data.idWinner === 0) {
+      versusResult = GAME_RESULTS.DRAW;
+    } else {
+      if (data.idWinner === $game.players.host.id) {
+        versusResult = GAME_RESULTS.YOU_WIN;
+        game.setWinner(false);
+        game.incrementScore(false);
+      } else {
+        versusResult = GAME_RESULTS.YOU_LOST;
+        game.setWinner(true);
+        game.incrementScore(true);
+      }
+    }
+  });
+
+  onDestroy(() => {
+    socketService.off(GAME_EVENTS.GAME_RESULT_READY);
+  });
 </script>
 
 <style>
@@ -69,10 +104,10 @@
       isLoading={!$game.players.opponent.typePicked} />
   </div>
   <div class="versus__result">
-    <div>YOU WIN</div>
+    <div>{versusResult}</div>
     <button
       class="btn btn--large versus__result__play-again"
-      on:click={game.playAgain}>
+      on:click={() => playAgain()}>
       Play again
     </button>
   </div>
