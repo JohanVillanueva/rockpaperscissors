@@ -16,7 +16,7 @@
   game.setId();
 
   socketService.socket.on(GAME_EVENTS.VERIFY_ROOM_AVAILABILITY, data => {
-    console.log("event on ", GAME_EVENTS.VERIFY_ROOM_AVAILABILITY);
+    // REFACTOR: check room availability
     const { code, message } = data;
     if (code === "ERROR") {
       alert(message);
@@ -24,7 +24,7 @@
   });
 
   socketService.socket.on(GAME_EVENTS.GAME_IS_READY, data => {
-    console.log("event on ", GAME_EVENTS.GAME_IS_READY);
+    // REFACTOR: start the game
   });
 
   socketService.emit(GAME_EVENTS.JOIN_ROOM, $game.players.host);

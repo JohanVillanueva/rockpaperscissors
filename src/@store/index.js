@@ -22,6 +22,10 @@ const INITIAL_GAME_STATE = {
   },
 };
 
+function getRandomId() {
+  return Math.floor(Math.random() * 10000) + 1;
+}
+
 function createGameStore() {
   const { subscribe, set, update } = writable(INITIAL_GAME_STATE);
 
@@ -55,12 +59,12 @@ function createGameStore() {
         if (isOpponent) {
           opponent = {
             ...opponent,
-            id: Math.floor(Math.random() * 10000) + 1,
+            id: getRandomId(),
           };
         } else {
           host = {
             ...host,
-            id: Math.floor(Math.random() * 10000) + 1,
+            id: getRandomId(),
           };
         }
         return {

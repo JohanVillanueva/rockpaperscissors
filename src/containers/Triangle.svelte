@@ -7,7 +7,6 @@
 
   const DURATION = 10;
   let types = getContext("circleTypes");
-  let socket = getContext("socket");
 
   const circleSelected = circleType => {
     game.setTypePicked(circleType);

@@ -15,26 +15,21 @@ export const GAME_EVENTS = {
 class SocketService {
   constructor() {
     this.socket = null;
-    console.log("socket service is created");
   }
 
   connect() {
-    console.log("socket connect");
     this.socket = io.connect(BASE_API, { forceNew: true });
   }
 
   disconnect() {
-    console.log("socket disconnect");
     this.socket && this.socket.disconnect();
   }
 
   emit(event, data = null) {
-    console.log("socket event emitted ", event);
     this.socket && this.socket.emit(event, data);
   }
 
   off(event) {
-    console.log("socket event off ", event);
     this.socket && this.socket.off(event);
   }
 }
