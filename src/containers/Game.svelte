@@ -1,9 +1,9 @@
 <script>
   import { setContext, onDestroy } from "svelte";
   import { game } from "../@store";
+  import { socketService, GAME_EVENTS } from "../services/socket";
   import Versus from "./Versus.svelte";
   import Triangle from "./Triangle.svelte";
-  import * as io from "socket.io-client";
 
   let playerCirclePickedType;
   let room;
@@ -15,22 +15,21 @@
   game.setRoom(room);
   game.setId();
 
-  let socket = io.connect("http://localhost:8080", { forceNew: true });
-  socket.on("joinRoomResponse", function(data) {
+  socketService.socket.on(GAME_EVENTS.VERIFY_ROOM_AVAILABILITY, data => {
+    console.log("event on ", GAME_EVENTS.VERIFY_ROOM_AVAILABILITY);
     const { code, message } = data;
     if (code === "ERROR") {
       alert(message);
     }
   });
 
-  socket.on("gameReady", function(data) {
-    console.log(data);
+  socketService.socket.on(GAME_EVENTS.GAME_IS_READY, data => {
+    console.log("event on ", GAME_EVENTS.GAME_IS_READY);
   });
 
-  socket.emit("joinRoom", $game.players.host);
+  socketService.emit(GAME_EVENTS.JOIN_ROOM, $game.players.host);
 
   setContext("circleTypes", ["rock", "paper", "scissors"]);
-  setContext("socket", socket);
 
   const handleTrianglePicked = circlePickedType => {
     playerCirclePickedType = circlePickedType;
@@ -41,7 +40,7 @@
   };
 
   window.onbeforeunload = function() {
-    socket.emit("exitGame", $game.players.host);
+    socketService.emit(GAME_EVENTS.EXIT_GAME, $game.players.host);
   };
 </script>
 

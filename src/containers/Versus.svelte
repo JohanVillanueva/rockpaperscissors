@@ -2,18 +2,24 @@
   import { createEventDispatcher, getContext, onDestroy } from "svelte";
   import { game } from "../@store";
   import Picker from "./../components/Picker.svelte";
+  import { socketService, GAME_EVENTS } from "../services/socket";
 
   const dispatch = createEventDispatcher();
-  let socket = getContext("socket");
+  const GAME_RESULTS = {
+    DRAW: "DRAW",
+    YOU_WIN: "YOU WIN",
+    YOU_LOST: "YOU LOST"
+  };
+
   let versusResult = "";
 
   const playAgain = () => {
-    socket.emit("playAgain", $game.players.host);
+    socketService.emit(GAME_EVENTS.PLAY_AGAIN, $game.players.host);
     game.playAgain();
     dispatch("playAgain");
   };
 
-  socket.on("circleSelectedResponse", function(data) {
+  socketService.socket.on(GAME_EVENTS.GAME_RESULT_READY, data => {
     data.players.forEach(function(player) {
       if (player.id !== $game.players.host.id) {
         game.setTypePicked(player.typePicked, true);
@@ -21,14 +27,14 @@
     });
 
     if (data.idWinner === 0) {
-      versusResult = "DRAW";
+      versusResult = GAME_RESULTS.DRAW;
     } else {
       if (data.idWinner === $game.players.host.id) {
-        versusResult = "YOU WIN";
+        versusResult = GAME_RESULTS.YOU_WIN;
         game.setWinner(false);
         game.incrementScore(false);
       } else {
-        versusResult = "YOU LOST";
+        versusResult = GAME_RESULTS.YOU_LOST;
         game.setWinner(true);
         game.incrementScore(true);
       }
@@ -36,7 +42,7 @@
   });
 
   onDestroy(() => {
-    socket.off("circleSelectedResponse");
+    socketService.off(GAME_EVENTS.GAME_RESULT_READY);
   });
 </script>
 
