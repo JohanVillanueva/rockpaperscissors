@@ -3,7 +3,7 @@
   import { getContext } from "svelte";
   import { game } from "../store";
   import Circle from "./../components/Circle.svelte";
-  import { socketService, GAME_EVENTS } from "../services/socket";
+  import { socketService, GAME_EVENTS } from "../services";
 
   const DURATION = 10;
   let types = getContext("circleTypes");

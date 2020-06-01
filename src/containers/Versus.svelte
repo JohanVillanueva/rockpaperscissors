@@ -2,7 +2,7 @@
   import { createEventDispatcher, getContext, onDestroy } from "svelte";
   import { game } from "../store";
   import Picker from "./../components/Picker.svelte";
-  import { socketService, GAME_EVENTS } from "../services/socket";
+  import { socketService, GAME_EVENTS } from "../services";
   import { GAME_RESULTS } from "./../constants";
 
   const dispatch = createEventDispatcher();

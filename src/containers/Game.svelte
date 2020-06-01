@@ -1,7 +1,7 @@
 <script>
   import { setContext, onDestroy } from "svelte";
   import { game } from "../store";
-  import { socketService, GAME_EVENTS } from "../services/socket";
+  import { socketService, GAME_EVENTS } from "../services";
   import Versus from "./Versus.svelte";
   import Triangle from "./Triangle.svelte";
 

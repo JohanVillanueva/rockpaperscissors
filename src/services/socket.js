@@ -36,6 +36,10 @@ class SocketService {
   off(event) {
     this.socket && this.socket.off(event);
   }
+
+  verifyError(data) {
+    return !!data.error;
+  }
 }
 
 export const socketService = new SocketService();

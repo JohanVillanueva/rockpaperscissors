@@ -1,4 +1,5 @@
 <script>
+  import { socketService, GAME_EVENTS } from "./../services";
   import { game } from "./../store";
   import { createEventDispatcher } from "svelte";
 
@@ -15,18 +16,17 @@
 
   const createRoom = () => {
     loading = true;
-    setTimeout(() => {
-      loading = false;
-      mode = WAITING_MODE;
-      setTimeout(() => {
-        mode = READY_TO_PLAY_MODE;
-      }, 3000);
-    }, 3000);
+    socketService.emit(GAME_EVENTS.CREATE_ROOM, nickname);
   };
 
-  const goPlay = () => {
-    dispatch("play");
-  };
+  socketService.socket.on(GAME_EVENTS.ROOM_CREATED, data => {
+    // TODO: Remove logs. Only for debug
+    if (socketService.verifyError(data)) {
+      mode = CREATION_MODE;
+    } else {
+      mode = WAITING_MODE;
+    }
+  });
 </script>
 
 <style>
@@ -132,14 +132,8 @@
         {#if loading}Creating...{:else}Create room{/if}
       </button>
     {:else if mode === WAITING_MODE}
-      <button class="btn btn--large home__form__button" disabled={loading}>
+      <button class="btn btn--large home__form__button" disabled={true}>
         Waiting...
-      </button>
-    {:else}
-      <button
-        class="btn btn--large home__form__button"
-        on:click={() => goPlay()}>
-        Play!
       </button>
     {/if}
 

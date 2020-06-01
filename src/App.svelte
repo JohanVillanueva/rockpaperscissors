@@ -3,17 +3,11 @@
   import Home from "./containers/Home.svelte";
   import Game from "./containers/Game.svelte";
   import Header from "./components/Header.svelte";
-  import { socketService } from "./services/socket";
+  import { socketService } from "./services";
 
   let inGame = false;
 
-  const handleStartplay = () => {
-    inGame = true;
-  };
-
-  onMount(async () => {
-    socketService.connect();
-  });
+  socketService.connect();
 
   onDestroy(async () => {
     socketService.disconnect();
@@ -101,12 +95,15 @@
 </style>
 
 <div class="wrapper">
+  <!-- content here -->
   <main>
     <Header />
-    {#if inGame}
-      <Game />
-    {:else}
-      <Home on:play={() => handleStartplay()} />
-    {/if}
+    {#if socketService.socket}
+      {#if inGame}
+        <Game />
+      {:else}
+        <Home />
+      {/if}
+    {:else}socket no disponible{/if}
   </main>
 </div>
