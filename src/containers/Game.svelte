@@ -1,6 +1,6 @@
 <script>
   import { setContext, onDestroy } from "svelte";
-  import { game } from "../@store";
+  import { game } from "../store";
   import { socketService, GAME_EVENTS } from "../services/socket";
   import Versus from "./Versus.svelte";
   import Triangle from "./Triangle.svelte";
@@ -10,7 +10,7 @@
 
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-  room = urlParams.get("room").toString();
+  room = urlParams.get("room") && urlParams.get("room").toString();
 
   game.setRoom(room);
   game.setId();

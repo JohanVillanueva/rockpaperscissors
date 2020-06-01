@@ -1,7 +1,7 @@
 <script>
   import Timer from "./../components/Timer.svelte";
   import { getContext } from "svelte";
-  import { game } from "../@store";
+  import { game } from "../store";
   import Circle from "./../components/Circle.svelte";
   import { socketService, GAME_EVENTS } from "../services/socket";
 

@@ -1,15 +1,11 @@
 <script>
   import { createEventDispatcher, getContext, onDestroy } from "svelte";
-  import { game } from "../@store";
+  import { game } from "../store";
   import Picker from "./../components/Picker.svelte";
   import { socketService, GAME_EVENTS } from "../services/socket";
+  import { GAME_RESULTS } from "./../constants";
 
   const dispatch = createEventDispatcher();
-  const GAME_RESULTS = {
-    DRAW: "DRAW",
-    YOU_WIN: "YOU WIN",
-    YOU_LOST: "YOU LOST"
-  };
 
   let versusResult = "";
 
@@ -19,7 +15,7 @@
     dispatch("playAgain");
   };
 
-  socketService.socket.on(GAME_EVENTS.GAME_RESULT_READY, data => {
+  socketService.socket.on(GAME_EVENTS.GAME_RESULT, data => {
     data.players.forEach(function(player) {
       if (player.id !== $game.players.host.id) {
         game.setTypePicked(player.typePicked, true);
@@ -42,7 +38,7 @@
   });
 
   onDestroy(() => {
-    socketService.off(GAME_EVENTS.GAME_RESULT_READY);
+    socketService.off(GAME_EVENTS.GAME_RESULT);
   });
 </script>
 
@@ -111,5 +107,4 @@
       Play again
     </button>
   </div>
-
 </div>

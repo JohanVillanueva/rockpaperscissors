@@ -1,5 +1,5 @@
 <script>
-  import { game } from "./../@store";
+  import { game } from "./../store";
   import { createEventDispatcher } from "svelte";
 
   const WAITING_MODE = "waiting";

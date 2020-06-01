@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from "svelte";
   import Home from "./containers/Home.svelte";
   import Game from "./containers/Game.svelte";
-  import Header from "./containers/Header.svelte";
+  import Header from "./components/Header.svelte";
   import { socketService } from "./services/socket";
 
   let inGame = false;
