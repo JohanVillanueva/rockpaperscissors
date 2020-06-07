@@ -1,4 +1,5 @@
 <script>
+  import Link from "./../components/Link.svelte";
   import { socketService, GAME_EVENTS } from "./../services";
   import { game } from "./../store";
   import { createEventDispatcher } from "svelte";
@@ -56,40 +57,6 @@
   .home__form__button {
     width: 30%;
   }
-
-  .home__invitation__title {
-    color: white;
-    margin-bottom: 15px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .home__invitation {
-    margin-top: 35px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .home__invitation__share {
-    display: flex;
-  }
-
-  .home__invitation__share span {
-    padding: 10px;
-    font-size: 12px;
-    color: var(--circle-background);
-    width: 85%;
-    border: 2px solid var(--borders-color);
-    border-right: 0;
-  }
-  .home__invitation__share .btn {
-    min-width: auto;
-    padding: 12px 15px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    color: white;
-    background: var(--paper-gradient);
-  }
-
   @media (max-width: 600px) {
     .home {
       flex-direction: column;
@@ -106,7 +73,6 @@
     }
 
     .home__form__input,
-    .home__invitation,
     .home__form__button {
       max-width: 280px;
     }
@@ -140,13 +106,14 @@
   </div>
 
   {#if mode === WAITING_MODE}
-    <div class="home__invitation">
+    <!-- <div class="home__invitation">
       <div class="home__invitation__title">Invite your friends</div>
       <div class="home__invitation__share">
         <span>{gameInvitationLink}</span>
         <button class="btn">COPY</button>
       </div>
-    </div>
+    </div> -->
+    <Link />
   {/if}
 
 </div>
