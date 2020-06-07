@@ -19,11 +19,15 @@
     socketService.emit(GAME_EVENTS.CREATE_ROOM, nickname);
   };
 
-  socketService.socket.on(GAME_EVENTS.ROOM_CREATED, data => {
-    // TODO: Remove logs. Only for debug
-    if (socketService.verifyError(data)) {
+  // response: { error: "", data: { hostId: string, roomId: string } }
+  socketService.socket.on(GAME_EVENTS.ROOM_CREATED, response => {
+    if (socketService.verifyError(response)) {
+      // TODO: Error handler
       mode = CREATION_MODE;
     } else {
+      const { hostId, roomId } = response.data;
+      game.setRoom(hostId);
+      game.setId(hostId, nickname);
       mode = WAITING_MODE;
     }
   });

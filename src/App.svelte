@@ -95,7 +95,6 @@
 </style>
 
 <div class="wrapper">
-  <!-- content here -->
   <main>
     <Header />
     {#if socketService.socket}

@@ -1,6 +1,6 @@
 import * as io from "socket.io-client";
 
-const BASE_API = "http://localhost:8080";
+const BASE_API = "https://rock-paper-scissors-gamer.herokuapp.com/";
 
 export const GAME_EVENTS = {
   CREATE_ROOM: "CREATE_ROOM",
