@@ -1,20 +1,30 @@
 <script>
-  import Timer from "./../components/Timer.svelte";
   import { getContext } from "svelte";
-  import { game } from "../store";
+  import Timer from "./../components/Timer.svelte";
+  import { game, currentPlayerInfo } from "../store";
   import Circle from "./../components/Circle.svelte";
-  import { socketService, GAME_EVENTS } from "../services";
+  import { socketService, GAME_EVENTS, gameInfoService } from "../services";
 
   const DURATION = 10;
   let types = getContext("circleTypes");
 
   const circleSelected = circleType => {
-    game.setTypePicked(circleType);
-    socketService.emit(GAME_EVENTS.USER_PICKED, $game.players.host);
+    game.setTypePicked(
+      circleType,
+      $game.players.host.id !== $currentPlayerInfo.id
+    );
+    const playerInfo = $currentPlayerInfo;
+
+    socketService.emit(GAME_EVENTS.USER_PICKED, {
+      ...playerInfo,
+      room: $game.id
+    });
   };
+
   const handleTimeOut = () => {
     circleSelected(types[getRandomInt(0, types.length)]);
   };
+
   const getRandomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min)) + min;
   };
