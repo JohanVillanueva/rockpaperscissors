@@ -1,10 +1,11 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
+  import { onDestroy } from "svelte";
   import Home from "./containers/Home.svelte";
   import Game from "./containers/Game.svelte";
   import Header from "./components/Header.svelte";
   import { game, currentPlayerInfo } from "./store";
   import { socketService, GAME_EVENTS, gameInfoService } from "./services";
+  import { NotificationDisplay } from "@beyonk/svelte-notifications";
 
   let inGame = false;
 
@@ -119,6 +120,8 @@
     }
   }
 </style>
+
+<NotificationDisplay />
 
 <div class="wrapper">
   <main>
