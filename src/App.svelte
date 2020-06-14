@@ -4,6 +4,7 @@
   import Game from "./containers/Game.svelte";
   import Header from "./components/Header.svelte";
   import { socketService } from "./services";
+  import { NotificationDisplay, notifier } from "@beyonk/svelte-notifications";
 
   let inGame = false;
 
@@ -93,6 +94,8 @@
     }
   }
 </style>
+
+<NotificationDisplay />
 
 <div class="wrapper">
   <!-- content here -->

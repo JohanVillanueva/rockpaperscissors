@@ -1,11 +1,14 @@
 <script>
   import * as clipboardy from "clipboardy";
   import { alertService } from "./../services";
-  let gameInvitationLink = "https://rps/sdd3c";
 
+  let gameInvitationLink = "https://rps/sdd3c";
+  const INVITATION_LINK = "Invitation link  was copied to clipboard";
   let response = false;
   const copylink = gameInvitationLink => {
-    clipboardy.write(gameInvitationLink).then(data => alertService.showError());
+    clipboardy
+      .write(gameInvitationLink)
+      .then(data => alertService.showInfo(INVITATION_LINK));
   };
 </script>
 

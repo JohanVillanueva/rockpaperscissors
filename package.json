@@ -7,6 +7,7 @@
     "start": "sirv public"
   },
   "devDependencies": {
+    "@beyonk/svelte-notifications": "^2.0.3",
     "@rollup/plugin-commonjs": "11.0.2",
     "@rollup/plugin-node-resolve": "^7.0.0",
     "rollup": "^1.20.0",
@@ -19,6 +20,7 @@
     "clipboardy": "^2.3.0",
     "sirv-cli": "^0.4.4",
     "socket.io": "^2.3.0",
+    "svelte-alerter-component": "^1.3.0",
     "toastr": "^2.1.4"
   }
 }

@@ -1,11 +1,18 @@
-import * as Toastr from 'toastr'
+import { notifier } from '@beyonk/svelte-notifications'
+
 class AlertService {
-  constructor() {}
-  showError() {
-    Toastr.error('mensaje')
+  showError(message) {
+    notifier.danger(message)
   }
-  showSuccess(message) {}
-  showWarning(message) {}
-  showInfo(message) {}
+  showSuccess(message) {
+    notifier.success(message)
+  }
+  showWarning(message) {
+    notifier.warning(message)
+  }
+  showInfo(message) {
+    notifier.info(message)
+  }
 }
+
 export const alertService = new AlertService()
