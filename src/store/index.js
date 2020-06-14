@@ -1,4 +1,5 @@
-import { writable } from "svelte/store";
+import { writable, derived } from "svelte/store";
+import { gameInfoService } from "../services";
 
 const INITIAL_GAME_STATE = {
   id: "",
@@ -151,3 +152,7 @@ function createGameStore() {
   };
 }
 export const game = createGameStore();
+
+export const currentPlayerInfo = derived(game, ({ players }) =>
+  gameInfoService.isHost ? players.host : players.opponent
+);
