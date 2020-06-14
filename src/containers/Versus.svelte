@@ -1,48 +1,51 @@
 <script>
   import { createEventDispatcher, getContext, onDestroy } from "svelte";
-  import { game } from "../@store";
+  import { game, currentPlayerInfo } from "../store";
   import Picker from "./../components/Picker.svelte";
-  import { socketService, GAME_EVENTS } from "../services/socket";
+  import { socketService, GAME_EVENTS, gameInfoService } from "../services";
+  import { GAME_RESULTS } from "./../constants";
 
   const dispatch = createEventDispatcher();
-  const GAME_RESULTS = {
-    DRAW: "DRAW",
-    YOU_WIN: "YOU WIN",
-    YOU_LOST: "YOU LOST"
-  };
 
   let versusResult = "";
 
   const playAgain = () => {
-    socketService.emit(GAME_EVENTS.PLAY_AGAIN, $game.players.host);
+    const playerInfo = $currentPlayerInfo;
+    socketService.emit(GAME_EVENTS.PLAY_AGAIN, {
+      room: $game.id,
+      id: playerInfo.id
+    });
     game.playAgain();
     dispatch("playAgain");
   };
 
-  socketService.socket.on(GAME_EVENTS.GAME_RESULT_READY, data => {
-    data.players.forEach(function(player) {
-      if (player.id !== $game.players.host.id) {
-        game.setTypePicked(player.typePicked, true);
-      }
-    });
-
-    if (data.idWinner === 0) {
-      versusResult = GAME_RESULTS.DRAW;
+  // response: { error: "", data: { host, opponent, isWinner: 0 | 1 | 2 } }
+  // 0 = DRAW, 1 = HOST WINNER,  2 = OPPONENT WINNER
+  socketService.socket.on(GAME_EVENTS.GAME_RESULT, response => {
+    if (socketService.verifyError(response)) {
+      console.log("error game result");
     } else {
-      if (data.idWinner === $game.players.host.id) {
-        versusResult = GAME_RESULTS.YOU_WIN;
-        game.setWinner(false);
-        game.incrementScore(false);
+      const { host, opponent, isWinner } = response.data;
+
+      game.setTypePicked(host.typePicked);
+      game.setTypePicked(opponent.typePicked, true);
+
+      if (isWinner === 0) {
+        versusResult = GAME_RESULTS.DRAW;
       } else {
-        versusResult = GAME_RESULTS.YOU_LOST;
-        game.setWinner(true);
-        game.incrementScore(true);
+        game.setWinner(isWinner === 2);
+        game.incrementScore(isWinner === 2);
+
+        versusResult =
+          gameInfoService.isHost && isWinner === 1
+            ? GAME_RESULTS.YOU_WIN
+            : GAME_RESULTS.YOU_LOST;
       }
     }
   });
 
   onDestroy(() => {
-    socketService.off(GAME_EVENTS.GAME_RESULT_READY);
+    socketService.off(GAME_EVENTS.GAME_RESULT);
   });
 </script>
 
@@ -111,5 +114,4 @@
       Play again
     </button>
   </div>
-
 </div>

@@ -1,23 +1,44 @@
 <script>
-  import { onMount, onDestroy } from "svelte";
+  import { onDestroy } from "svelte";
   import Home from "./containers/Home.svelte";
   import Game from "./containers/Game.svelte";
-  import Header from "./containers/Header.svelte";
-  import { socketService } from "./services/socket";
+  import Header from "./components/Header.svelte";
+  import { game, currentPlayerInfo } from "./store";
+  import { socketService, GAME_EVENTS, gameInfoService } from "./services";
+  import { NotificationDisplay } from "@beyonk/svelte-notifications";
 
   let inGame = false;
 
-  const handleStartplay = () => {
-    inGame = true;
+  socketService.connect();
+
+  const listenGameReady = () => {
+    // response: { error: "", data: { guestId: string, guestName: string } }
+    socketService.socket.on(GAME_EVENTS.GAME_IS_READY, response => {
+      if (socketService.verifyError(response)) {
+        // TODO: Error handler;
+        console.error("error in ", GAME_EVENTS.GAME_IS_READY);
+      } else {
+        const { host, opponent } = response.data;
+        game.setId(host.id, host.name);
+        game.setId(opponent.id, opponent.name, true);
+        inGame = true;
+      }
+    });
   };
 
-  onMount(async () => {
-    socketService.connect();
-  });
+  listenGameReady();
 
   onDestroy(async () => {
     socketService.disconnect();
   });
+
+  window.onbeforeunload = function() {
+    const playerInfo = $currentPlayerInfo;
+    socketService.emit(GAME_EVENTS.EXIT_GAME, {
+      id: playerInfo.id,
+      room: $game.id
+    });
+  };
 </script>
 
 <style>
@@ -100,13 +121,17 @@
   }
 </style>
 
+<NotificationDisplay />
+
 <div class="wrapper">
   <main>
     <Header />
-    {#if inGame}
-      <Game />
-    {:else}
-      <Home on:play={() => handleStartplay()} />
-    {/if}
+    {#if socketService.socket}
+      {#if inGame}
+        <Game />
+      {:else}
+        <Home />
+      {/if}
+    {:else}socket no disponible{/if}
   </main>
 </div>
