@@ -1,4 +1,4 @@
-const QUERY_PARAMETER_ROOM_NAME = "room";
+const QUERY_PARAMETER_ROOM_NAME = "r";
 
 class GameInfoService {
   constructor() {
