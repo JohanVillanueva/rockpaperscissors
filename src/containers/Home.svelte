@@ -1,32 +1,84 @@
 <script>
-  import { game } from "./../@store";
-  import { createEventDispatcher } from "svelte";
+  import { socketService, GAME_EVENTS, gameInfoService } from "./../services";
+  import Link from "./../components/Link.svelte";
+  import { game } from "./../store";
 
   const WAITING_MODE = "waiting";
   const CREATION_MODE = "create";
-  const READY_TO_PLAY_MODE = "ready";
+  const JOIN_ROOM = "join_room";
 
-  let mode = CREATION_MODE;
+  let mode;
   let nickname = "";
   let loading = false;
-  let gameInvitationLink = "https://rps/sdd3c";
-
-  const dispatch = createEventDispatcher();
+  let invitationLink = "";
+  const isHost = gameInfoService.isHost;
 
   const createRoom = () => {
     loading = true;
-    setTimeout(() => {
-      loading = false;
-      mode = WAITING_MODE;
-      setTimeout(() => {
-        mode = READY_TO_PLAY_MODE;
-      }, 3000);
-    }, 3000);
+    socketService.emit(GAME_EVENTS.CREATE_ROOM, nickname);
   };
 
-  const goPlay = () => {
-    dispatch("play");
+  const joinRoom = () => {
+    loading = true;
+    socketService.emit(GAME_EVENTS.JOIN_ROOM, {
+      name: nickname,
+      roomId: gameInfoService.roomId
+    });
   };
+
+  const initialize = () => {
+    if (!isHost) {
+      mode = JOIN_ROOM;
+      verifyRoomAvailability();
+    } else {
+      mode = CREATION_MODE;
+      listenRoomCreatedEvent();
+    }
+  };
+
+  const verifyRoomAvailability = () => {
+    listenVerifyRoomAvailabilityResult();
+    socketService.emit(
+      GAME_EVENTS.VERIFY_ROOM_AVAILABILITY,
+      gameInfoService.roomId
+    );
+  };
+
+  const listenRoomCreatedEvent = () => {
+    // response: { error: "", data: { hostId: string, roomId: string } }
+    socketService.socket.on(GAME_EVENTS.ROOM_CREATED, response => {
+      if (response.error) {
+        gameInfoService.notifyError(response.error);
+        mode = CREATION_MODE;
+      } else {
+        const { hostId, roomId } = response.data;
+        game.setRoom(roomId);
+        game.setId(hostId, nickname);
+        invitationLink = gameInfoService.getInvitationLink(roomId);
+        mode = WAITING_MODE;
+      }
+    });
+  };
+
+  const listenVerifyRoomAvailabilityResult = () => {
+    // response: { error: "" }
+    socketService.socket.on(
+      GAME_EVENTS.VERIFY_ROOM_AVAILABILITY_RESULT,
+      response => {
+        if (response.error) {
+          gameInfoService.notifyError(response.error);
+          setTimeout(() => {
+            gameInfoService.goHome();
+          }, 3000);
+        } else {
+          mode = JOIN_ROOM;
+          game.setRoom(gameInfoService.roomId);
+        }
+      }
+    );
+  };
+
+  initialize();
 </script>
 
 <style>
@@ -56,40 +108,6 @@
   .home__form__button {
     width: 30%;
   }
-
-  .home__invitation__title {
-    color: white;
-    margin-bottom: 15px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-
-  .home__invitation {
-    margin-top: 35px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .home__invitation__share {
-    display: flex;
-  }
-
-  .home__invitation__share span {
-    padding: 10px;
-    font-size: 12px;
-    color: var(--circle-background);
-    width: 85%;
-    border: 2px solid var(--borders-color);
-    border-right: 0;
-  }
-  .home__invitation__share .btn {
-    min-width: auto;
-    padding: 12px 15px;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-    color: white;
-    background: var(--paper-gradient);
-  }
-
   @media (max-width: 600px) {
     .home {
       flex-direction: column;
@@ -106,7 +124,6 @@
     }
 
     .home__form__input,
-    .home__invitation,
     .home__form__button {
       max-width: 280px;
     }
@@ -122,7 +139,8 @@
       maxlength="15"
       autocomplete="off"
       bind:value={nickname}
-      class="home__form__input" />
+      class="home__form__input"
+      class:disabled={loading} />
 
     {#if mode === CREATION_MODE}
       <button
@@ -131,28 +149,23 @@
         on:click={() => createRoom()}>
         {#if loading}Creating...{:else}Create room{/if}
       </button>
-    {:else if mode === WAITING_MODE}
-      <button class="btn btn--large home__form__button" disabled={loading}>
-        Waiting...
-      </button>
-    {:else}
+    {:else if mode === JOIN_ROOM}
       <button
         class="btn btn--large home__form__button"
-        on:click={() => goPlay()}>
-        Play!
+        disabled={loading || !nickname}
+        on:click={() => joinRoom()}>
+        {#if loading}Joining...{:else}Join{/if}
+      </button>
+    {:else if mode === WAITING_MODE}
+      <button class="btn btn--large home__form__button" disabled={true}>
+        Waiting...
       </button>
     {/if}
 
   </div>
 
-  {#if mode === WAITING_MODE}
-    <div class="home__invitation">
-      <div class="home__invitation__title">Invite your friends</div>
-      <div class="home__invitation__share">
-        <span>{gameInvitationLink}</span>
-        <button class="btn">COPY</button>
-      </div>
-    </div>
+  {#if mode === WAITING_MODE && isHost && invitationLink}
+    <Link gameInvitationLink={invitationLink} />
   {/if}
 
 </div>

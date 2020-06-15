@@ -1,6 +1,7 @@
 <script>
-  import { setContext } from "svelte";
-  import { game } from "../@store";
+  import { setContext, onDestroy } from "svelte";
+  import { game, currentPlayerInfo } from "../store";
+  import { socketService, GAME_EVENTS, gameInfoService } from "../services";
   import Versus from "./Versus.svelte";
   import Triangle from "./Triangle.svelte";
 
@@ -30,7 +31,7 @@
 </style>
 
 <div class="game">
-  {#if $game.players.host.typePicked}
+  {#if $currentPlayerInfo.typePicked}
     <Versus on:playAgain={() => handlePlayAgain()} />
   {:else}
     <Triangle />

@@ -54,3 +54,21 @@ input {
   font-family: "Barlow Semi Condensed", sans-serif;
   box-sizing: border-box;
 }
+
+input.disabled {
+  border-color: var(--borders-color);
+  pointer-events: none;
+  user-select: none;
+}
+
+.toasts {
+  bottom: 0 !important;
+  top: unset !important;
+  right: auto !important ;
+  left: auto;
+  border-top-left-radius: 10px !important;
+  border-bottom-left-radius: 10px !important;
+}
+.toasts .toast {
+  border-radius: 5px;
+}

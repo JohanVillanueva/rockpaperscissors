@@ -1,7 +1,3 @@
-<script>
-  import Score from "./../components/Score.svelte";
-</script>
-
 <style>
   .header {
     padding: 15px;
@@ -46,5 +42,4 @@
     <img src="assets/images/logo.svg" alt="Rock, paper, scissors!" />
     <div class="header__logo__tagline">Rock, paper, scissors!</div>
   </div>
-
 </div>

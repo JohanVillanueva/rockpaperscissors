@@ -1,18 +1,19 @@
-import { writable } from "svelte/store";
+import { writable, derived } from "svelte/store";
+import { gameInfoService } from "../services";
 
 const INITIAL_GAME_STATE = {
   id: "",
   players: {
     host: {
-      id: "",
+      id: 0,
       name: "",
       score: 0,
       typePicked: "",
       isWinner: false,
     },
     opponent: {
-      id: "",
-      name: "Cristhian",
+      id: 0,
+      name: "",
       score: 0,
       typePicked: "",
       isWinner: false,
@@ -36,7 +37,7 @@ function createGameStore() {
         } else {
           host = {
             ...host,
-            score: opponent.host + 1,
+            score: host.score + 1,
           };
         }
         return {
@@ -45,6 +46,37 @@ function createGameStore() {
             host,
             opponent,
           },
+        };
+      }),
+    setId: (id, name, isOpponent = false) =>
+      update((game) => {
+        let { opponent, host } = game.players;
+        if (isOpponent) {
+          opponent = {
+            ...opponent,
+            id,
+            name: name.toUpperCase(),
+          };
+        } else {
+          host = {
+            ...host,
+            id,
+            name: name.toUpperCase(),
+          };
+        }
+        return {
+          ...game,
+          players: {
+            host,
+            opponent,
+          },
+        };
+      }),
+    setRoom: (id) =>
+      update((game) => {
+        return {
+          ...game,
+          id,
         };
       }),
     setTypePicked: (typePicked, isOpponent = false) =>
@@ -107,10 +139,12 @@ function createGameStore() {
           host: {
             ...game.players.host,
             typePicked: "",
+            isWinner: false,
           },
           opponent: {
             ...game.players.opponent,
             typePicked: "",
+            isWinner: false,
           },
         },
       })),
@@ -118,3 +152,7 @@ function createGameStore() {
   };
 }
 export const game = createGameStore();
+
+export const currentPlayerInfo = derived(game, ({ players }) =>
+  gameInfoService.isHost ? players.host : players.opponent
+);
