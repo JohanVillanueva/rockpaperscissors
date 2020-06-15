@@ -1,3 +1,5 @@
+import { alertService } from "./alert";
+
 const QUERY_PARAMETER_ROOM_NAME = "r";
 
 class GameInfoService {
@@ -24,6 +26,10 @@ class GameInfoService {
 
   goHome() {
     window.location.replace(window.location.origin);
+  }
+
+  notifyError(message) {
+    alertService.showError(message);
   }
 }
 

@@ -23,8 +23,8 @@
   const listenPlayAgain = () => {
     // response: { error: ""}
     socketService.socket.on(GAME_EVENTS.PLAY_AGAIN, response => {
-      if (socketService.verifyError(response)) {
-        // TODO: Error handler
+      if (response.error) {
+        gameInfoService.notifyError(response.error);
       } else {
         loading = false;
         game.playAgain();
@@ -37,8 +37,8 @@
     // response: { error: "", data: { host, opponent, isWinner: 0 | 1 | 2 } }
     // 0 = DRAW, 1 = HOST WINNER,  2 = OPPONENT WINNER
     socketService.socket.on(GAME_EVENTS.GAME_RESULT, response => {
-      if (socketService.verifyError(response)) {
-        console.log("error game result");
+      if (response.error) {
+        gameInfoService.notifyError(response.error);
       } else {
         const { host, opponent, isWinner } = response.data;
 
