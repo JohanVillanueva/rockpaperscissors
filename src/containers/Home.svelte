@@ -140,7 +140,8 @@
       maxlength="15"
       autocomplete="off"
       bind:value={nickname}
-      class="home__form__input" />
+      class="home__form__input"
+      class:disabled={loading} />
 
     {#if mode === CREATION_MODE}
       <button

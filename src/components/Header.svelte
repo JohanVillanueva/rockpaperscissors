@@ -1,7 +1,3 @@
-<script>
-
-</script>
-
 <style>
   .header {
     padding: 15px;

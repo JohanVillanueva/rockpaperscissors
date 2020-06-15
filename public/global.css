@@ -51,9 +51,16 @@ input {
   font-size: 16px;
   letter-spacing: 2px;
   min-width: 180px;
-  font-family: 'Barlow Semi Condensed', sans-serif;
+  font-family: "Barlow Semi Condensed", sans-serif;
   box-sizing: border-box;
 }
+
+input.disabled {
+  border-color: var(--borders-color);
+  pointer-events: none;
+  user-select: none;
+}
+
 .toasts {
   bottom: 0 !important;
   top: unset !important;
