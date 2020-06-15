@@ -26,7 +26,14 @@
     });
   };
 
+  const listenSomeoneLeft = () => {
+    socketService.socket.on(GAME_EVENTS.KICK_PLAYER, response => {
+      gameInfoService.goHome();
+    });
+  };
+
   listenGameReady();
+  listenSomeoneLeft();
 
   onDestroy(async () => {
     socketService.disconnect();
@@ -35,7 +42,6 @@
   window.onbeforeunload = function() {
     const playerInfo = $currentPlayerInfo;
     socketService.emit(GAME_EVENTS.EXIT_GAME, {
-      id: playerInfo.id,
       room: $game.id
     });
   };

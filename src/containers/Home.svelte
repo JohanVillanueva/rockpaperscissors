@@ -68,6 +68,9 @@
         if (socketService.verifyError(response)) {
           // TODO: Error handler
           mode = CREATION_MODE;
+          setTimeout(() => {
+            gameInfoService.goHome();
+          }, 3000);
         } else {
           mode = JOIN_ROOM;
           game.setRoom(gameInfoService.roomId);
