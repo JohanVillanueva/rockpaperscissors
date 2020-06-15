@@ -15,7 +15,8 @@
 
 <style>
   .home__invitation {
-    max-width: 280px;
+    display: inline-block;
+    width: 100%;
   }
   .home__invitation__share .btn {
     min-width: auto;
@@ -27,8 +28,6 @@
   }
   .home__invitation {
     margin-top: 35px;
-    margin-left: auto;
-    margin-right: auto;
   }
   .home__invitation__share {
     display: flex;
@@ -39,6 +38,7 @@
     font-size: 12px;
     color: var(--circle-background);
     width: 85%;
+    border-radius: 5px 0px 0px 5px;
     border: 2px solid var(--borders-color);
     border-right: 0;
   }
@@ -48,6 +48,12 @@
     margin-bottom: 15px;
     white-space: nowrap;
     text-overflow: ellipsis;
+  }
+
+  @media screen and (max-width: 600px) {
+    .home__invitation {
+      max-width: 280px;
+    }
   }
 </style>
 
