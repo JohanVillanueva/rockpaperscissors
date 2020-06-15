@@ -103,6 +103,7 @@
     margin: auto;
     padding: 30px 15px;
     box-sizing: border-box;
+    overflow: hidden;
   }
 
   main {
