@@ -21,6 +21,10 @@ class GameInfoService {
     const invitationLink = `${this.currentUrl}?${QUERY_PARAMETER_ROOM_NAME}=${roomId}`;
     return invitationLink;
   }
+
+  goHome() {
+    window.location.replace(window.location.origin);
+  }
 }
 
 export const gameInfoService = new GameInfoService();
