@@ -9,7 +9,7 @@
   const copylink = gameInvitationLink => {
     clipboardy
       .write(gameInvitationLink)
-      .then(data => alertService.showInfo(INVITATION_LINK));
+      .then(data => alertService.showSuccess(INVITATION_LINK));
   };
 </script>
 

@@ -1,4 +1,6 @@
-const QUERY_PARAMETER_ROOM_NAME = "room";
+import { alertService } from "./alert";
+
+const QUERY_PARAMETER_ROOM_NAME = "r";
 
 class GameInfoService {
   constructor() {
@@ -20,6 +22,14 @@ class GameInfoService {
   getInvitationLink(roomId) {
     const invitationLink = `${this.currentUrl}?${QUERY_PARAMETER_ROOM_NAME}=${roomId}`;
     return invitationLink;
+  }
+
+  goHome() {
+    window.location.replace(window.location.origin);
+  }
+
+  notifyError(message) {
+    alertService.showError(message);
   }
 }
 

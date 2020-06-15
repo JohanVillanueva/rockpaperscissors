@@ -47,8 +47,8 @@
   const listenRoomCreatedEvent = () => {
     // response: { error: "", data: { hostId: string, roomId: string } }
     socketService.socket.on(GAME_EVENTS.ROOM_CREATED, response => {
-      if (socketService.verifyError(response)) {
-        // TODO: Error handler
+      if (response.error) {
+        gameInfoService.notifyError(response.error);
         mode = CREATION_MODE;
       } else {
         const { hostId, roomId } = response.data;
@@ -65,9 +65,11 @@
     socketService.socket.on(
       GAME_EVENTS.VERIFY_ROOM_AVAILABILITY_RESULT,
       response => {
-        if (socketService.verifyError(response)) {
-          // TODO: Error handler
-          mode = CREATION_MODE;
+        if (response.error) {
+          gameInfoService.notifyError(response.error);
+          setTimeout(() => {
+            gameInfoService.goHome();
+          }, 3000);
         } else {
           mode = JOIN_ROOM;
           game.setRoom(gameInfoService.roomId);
@@ -137,7 +139,8 @@
       maxlength="15"
       autocomplete="off"
       bind:value={nickname}
-      class="home__form__input" />
+      class="home__form__input"
+      class:disabled={loading} />
 
     {#if mode === CREATION_MODE}
       <button

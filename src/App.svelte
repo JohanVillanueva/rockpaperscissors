@@ -1,11 +1,11 @@
 <script>
+  import { NotificationDisplay } from "@beyonk/svelte-notifications";
   import { onDestroy } from "svelte";
   import Home from "./containers/Home.svelte";
   import Game from "./containers/Game.svelte";
   import Header from "./components/Header.svelte";
   import { game, currentPlayerInfo } from "./store";
   import { socketService, GAME_EVENTS, gameInfoService } from "./services";
-  import { NotificationDisplay } from "@beyonk/svelte-notifications";
 
   let inGame = false;
 
@@ -14,9 +14,8 @@
   const listenGameReady = () => {
     // response: { error: "", data: { guestId: string, guestName: string } }
     socketService.socket.on(GAME_EVENTS.GAME_IS_READY, response => {
-      if (socketService.verifyError(response)) {
-        // TODO: Error handler;
-        console.error("error in ", GAME_EVENTS.GAME_IS_READY);
+      if (response.error) {
+        gameInfoService.notifyError(response.error);
       } else {
         const { host, opponent } = response.data;
         game.setId(host.id, host.name);
@@ -26,7 +25,14 @@
     });
   };
 
+  const listenSomeoneLeft = () => {
+    socketService.socket.on(GAME_EVENTS.KICK_PLAYER, response => {
+      gameInfoService.goHome();
+    });
+  };
+
   listenGameReady();
+  listenSomeoneLeft();
 
   onDestroy(async () => {
     socketService.disconnect();
@@ -35,7 +41,6 @@
   window.onbeforeunload = function() {
     const playerInfo = $currentPlayerInfo;
     socketService.emit(GAME_EVENTS.EXIT_GAME, {
-      id: playerInfo.id,
       room: $game.id
     });
   };

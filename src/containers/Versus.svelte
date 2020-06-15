@@ -8,41 +8,63 @@
   const dispatch = createEventDispatcher();
 
   let versusResult = "";
+  let loading = false;
 
   const playAgain = () => {
+    listenPlayAgain();
+    loading = true;
     const playerInfo = $currentPlayerInfo;
-    socketService.emit(GAME_EVENTS.PLAY_AGAIN, {
+    socketService.emit(GAME_EVENTS.PLAY_AGAIN_REQUEST, {
       room: $game.id,
       id: playerInfo.id
     });
-    game.playAgain();
-    dispatch("playAgain");
   };
 
-  // response: { error: "", data: { host, opponent, isWinner: 0 | 1 | 2 } }
-  // 0 = DRAW, 1 = HOST WINNER,  2 = OPPONENT WINNER
-  socketService.socket.on(GAME_EVENTS.GAME_RESULT, response => {
-    if (socketService.verifyError(response)) {
-      console.log("error game result");
-    } else {
-      const { host, opponent, isWinner } = response.data;
-
-      game.setTypePicked(host.typePicked);
-      game.setTypePicked(opponent.typePicked, true);
-
-      if (isWinner === 0) {
-        versusResult = GAME_RESULTS.DRAW;
+  const listenPlayAgain = () => {
+    // response: { error: ""}
+    socketService.socket.on(GAME_EVENTS.PLAY_AGAIN, response => {
+      if (response.error) {
+        gameInfoService.notifyError(response.error);
       } else {
-        game.setWinner(isWinner === 2);
-        game.incrementScore(isWinner === 2);
-
-        versusResult =
-          gameInfoService.isHost && isWinner === 1
-            ? GAME_RESULTS.YOU_WIN
-            : GAME_RESULTS.YOU_LOST;
+        loading = false;
+        game.playAgain();
+        dispatch("playAgain");
       }
-    }
-  });
+    });
+  };
+
+  const listenGameResult = () => {
+    // response: { error: "", data: { host, opponent, isWinner: 0 | 1 | 2 } }
+    // 0 = DRAW, 1 = HOST WINNER,  2 = OPPONENT WINNER
+    socketService.socket.on(GAME_EVENTS.GAME_RESULT, response => {
+      if (response.error) {
+        gameInfoService.notifyError(response.error);
+      } else {
+        const { host, opponent, isWinner } = response.data;
+
+        game.setTypePicked(host.typePicked);
+        game.setTypePicked(opponent.typePicked, true);
+
+        if (isWinner === 0) {
+          versusResult = GAME_RESULTS.DRAW;
+        } else {
+          game.setWinner(isWinner === 2);
+          game.incrementScore(isWinner === 2);
+
+          if (
+            (gameInfoService.isHost && isWinner === 1) ||
+            (!gameInfoService.isHost && isWinner === 2)
+          ) {
+            versusResult = GAME_RESULTS.YOU_WIN;
+          } else {
+            versusResult = GAME_RESULTS.YOU_LOST;
+          }
+        }
+      }
+    });
+  };
+
+  listenGameResult();
 
   onDestroy(() => {
     socketService.off(GAME_EVENTS.GAME_RESULT);
@@ -99,7 +121,9 @@
 
 <div class="versus">
   <div class="versus__picker1">
-    <Picker playerInfo={$game.players.host} />
+    <Picker
+      playerInfo={$game.players.host}
+      isLoading={!$game.players.host.typePicked} />
   </div>
   <div class="versus__picker2">
     <Picker
@@ -110,8 +134,9 @@
     <div>{versusResult}</div>
     <button
       class="btn btn--large versus__result__play-again"
-      on:click={() => playAgain()}>
-      Play again
+      on:click={() => playAgain()}
+      disabled={loading}>
+      {loading ? 'WAITING' : 'PLAY AGAIN'}
     </button>
   </div>
 </div>
