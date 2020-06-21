@@ -123,20 +123,24 @@
   <div class="versus__picker1">
     <Picker
       playerInfo={$game.players.host}
-      isLoading={!$game.players.host.typePicked} />
+      isLoading={!$game.players.host.typePicked}
+      showResult={!!versusResult} />
   </div>
   <div class="versus__picker2">
     <Picker
       playerInfo={$game.players.opponent}
-      isLoading={!$game.players.opponent.typePicked} />
+      isLoading={!$game.players.opponent.typePicked}
+      showResult={!!versusResult} />
   </div>
-  <div class="versus__result">
-    <div>{versusResult}</div>
-    <button
-      class="btn btn--large versus__result__play-again"
-      on:click={() => playAgain()}
-      disabled={loading}>
-      {loading ? 'WAITING' : 'PLAY AGAIN'}
-    </button>
-  </div>
+  {#if versusResult}
+    <div class="versus__result">
+      <div>{versusResult}</div>
+      <button
+        class="btn btn--large versus__result__play-again"
+        on:click={() => playAgain()}
+        disabled={loading}>
+        {loading ? 'WAITING' : 'PLAY AGAIN'}
+      </button>
+    </div>
+  {/if}
 </div>
