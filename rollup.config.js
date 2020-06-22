@@ -6,7 +6,12 @@ import livereload from "rollup-plugin-livereload";
 import { terser } from "rollup-plugin-terser";
 
 const production = !process.env.ROLLUP_WATCH;
-var { FIREBASE_APP_NAME, FIREBASE_MEASURE_ID, FIREBASE_API_KEY } = process.env;
+var {
+  FIREBASE_APP_NAME,
+  FIREBASE_MEASURE_ID,
+  FIREBASE_API_KEY,
+  FIREBASE_APP_ID,
+} = process.env;
 
 export default {
   input: "src/main.js",
@@ -30,6 +35,7 @@ export default {
       FIREBASE_APP_NAME: FIREBASE_APP_NAME,
       FIREBASE_MEASURE_ID: FIREBASE_MEASURE_ID,
       FIREBASE_API_KEY: FIREBASE_API_KEY,
+      FIREBASE_APP_ID: FIREBASE_APP_ID,
     }),
     // If you have external dependencies installed from
     // npm, you'll most likely need these plugins. In
