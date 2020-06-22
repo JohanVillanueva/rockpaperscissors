@@ -1,18 +1,18 @@
-import { notifier } from '@beyonk/svelte-notifications'
+import { notifier } from "@beyonk/svelte-notifications";
 
 class AlertService {
   showError(message) {
-    notifier.danger(message)
+    notifier.danger(message);
   }
   showSuccess(message) {
-    notifier.success(message)
+    notifier.success(message);
   }
   showWarning(message) {
-    notifier.warning(message)
+    notifier.warning(message);
   }
   showInfo(message) {
-    notifier.info(message)
+    notifier.info(message);
   }
 }
 
-export const alertService = new AlertService()
+export const alertService = new AlertService();

@@ -15,6 +15,7 @@ export const GAME_EVENTS = {
   PLAY_AGAIN: "PLAY_AGAIN",
   KICK_PLAYER: "KICK_PLAYER",
   EXIT_GAME: "EXIT_GAME",
+  CONNECT_ERROR: "connect_error",
 };
 
 class SocketService {
@@ -23,7 +24,9 @@ class SocketService {
   }
 
   connect() {
-    this.socket = io.connect(BASE_API, { forceNew: true });
+    this.socket = io.connect(BASE_API, {
+      reconnectionAttempts: 3,
+    });
   }
 
   disconnect() {

@@ -64,11 +64,54 @@ input.disabled {
 .toasts {
   bottom: 0 !important;
   top: unset !important;
-  right: auto !important ;
+  right: auto !important;
   left: auto;
+  min-width: 50% !important;
   border-top-left-radius: 10px !important;
   border-bottom-left-radius: 10px !important;
 }
 .toasts .toast {
   border-radius: 5px;
+  margin: 10px 0 25px !important;
+  min-width: 100% !important;
+  text-align: center !important;
+}
+
+@media screen and (max-width: 550px) {
+  .toasts {
+    min-width: 80% !important;
+  }
+}
+
+/* UTILITIES */
+
+.fade-in-animation {
+  animation: fadeSlideInUp 0.6s;
+  will-change: opacity, transform;
+}
+.fade-in-down-animation {
+  animation: fadeSlideInDown 0.6s;
+  will-change: opacity, transform;
+}
+
+@keyframes fadeSlideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeSlideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }
