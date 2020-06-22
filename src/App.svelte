@@ -6,10 +6,9 @@
   import Header from "./components/Header.svelte";
   import { game, currentPlayerInfo } from "./store";
   import { socketService, GAME_EVENTS, gameInfoService } from "./services";
+  import { alertService } from "./services";
 
   let inGame = false;
-
-  socketService.connect();
 
   const listenGameReady = () => {
     // response: { error: "", data: { guestId: string, guestName: string } }
@@ -31,9 +30,6 @@
     });
   };
 
-  listenGameReady();
-  listenSomeoneLeft();
-
   onDestroy(async () => {
     socketService.disconnect();
   });
@@ -44,6 +40,15 @@
       room: $game.id
     });
   };
+
+  socketService.connect();
+
+  socketService.socket.on(GAME_EVENTS.CONNECT_ERROR, response => {
+    alertService.showError("Failed to connect to server");
+  });
+
+  listenGameReady();
+  listenSomeoneLeft();
 </script>
 
 <style>
@@ -125,12 +130,18 @@
       --circle-size: 120px;
     }
   }
+
+  .connection-error-message {
+    text-align: center;
+    color: white;
+    user-select: none;
+  }
 </style>
 
 <NotificationDisplay />
 
 <div class="wrapper">
-  <main>
+  <main class="fade-in-animation">
     <Header />
     {#if socketService.socket}
       {#if inGame}
@@ -138,6 +149,12 @@
       {:else}
         <Home />
       {/if}
-    {:else}socket no disponible{/if}
+    {:else}
+      <div class="connection-error-message">
+        ¡Houston, we have a problem 😥!
+        <br />
+        Please, try again in a few minutes ⌚
+      </div>
+    {/if}
   </main>
 </div>
