@@ -57,7 +57,7 @@
   }
 </style>
 
-<div class="home__invitation">
+<div class="home__invitation fade-in-down-animation">
   <div class="home__invitation__title">Invite your friends</div>
   <div class="home__invitation__share">
     <span class="link">{gameInvitationLink}</span>

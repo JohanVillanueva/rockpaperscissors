@@ -4,6 +4,7 @@
 
   export let playerInfo;
   export let isLoading = false;
+  export let showResult = false;
 
   const circleTypes = getContext("circleTypes");
   const CIRCLE_TYPE_ANIMATION_TIME = 100;
@@ -29,6 +30,10 @@
     color: white;
   }
 
+  .player__info {
+    margin-bottom: 40px;
+  }
+
   .picker__name {
     text-transform: uppercase;
     margin-bottom: 10px;
@@ -37,7 +42,6 @@
   }
   .picker__score {
     text-transform: uppercase;
-    margin-bottom: 40px;
     font-size: 1.5em;
     letter-spacing: 2px;
   }
@@ -45,9 +49,9 @@
     .picker {
       flex-direction: column-reverse;
     }
-    .player_info {
+    .player__info {
       margin-bottom: 0;
-      margin-top: 40px;
+      margin-top: 20px;
       flex-direction: column;
     }
     .picker__name {
@@ -60,9 +64,11 @@
 </style>
 
 <div class="picker">
-  <div class="player_info">
+  <div class="player__info">
     <div class="picker__name">{playerInfo.name}</div>
-    <div class="picker__score">{playerInfo.score}</div>
+    {#if showResult}
+      <div class="picker__score">{playerInfo.score}</div>
+    {/if}
   </div>
   {#if isLoading}
     <Circle type={dynamicCircleType} isVersus={true} />
