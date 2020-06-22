@@ -2,10 +2,10 @@ export default function initializeAnalytics() {
   try {
     // Set yours custom env variables
     var firebaseConfig = {
-      apiKey: $FIREBASE_API_KEY$,
-      projectId: $FIREBASE_APP_NAME$,
-      measurementId: $FIREBASE_MEASURE_ID$,
-      appId: $FIREBASE_APP_ID$,
+      apiKey: "$FIREBASE_API_KEY$",
+      projectId: "$FIREBASE_APP_NAME$",
+      measurementId: "$FIREBASE_MEASURE_ID$",
+      appId: "$FIREBASE_APP_ID$",
     };
 
     console.log(firebaseConfig);
