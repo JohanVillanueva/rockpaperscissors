@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher, getContext, onDestroy } from "svelte";
+  import { fly } from "svelte/transition";
   import { game, currentPlayerInfo } from "../store";
   import Picker from "./../components/Picker.svelte";
   import { socketService, GAME_EVENTS, gameInfoService } from "../services";
@@ -120,20 +121,20 @@
 </style>
 
 <div class="versus">
-  <div class="versus__picker1">
+  <div class="versus__picker1" in:fly={{ x: 100, duration: 500 }}>
     <Picker
       playerInfo={$game.players.host}
       isLoading={!$game.players.host.typePicked}
       showResult={!!versusResult} />
   </div>
-  <div class="versus__picker2">
+  <div class="versus__picker2" in:fly={{ x: -100, duration: 500 }}>
     <Picker
       playerInfo={$game.players.opponent}
       isLoading={!$game.players.opponent.typePicked}
       showResult={!!versusResult} />
   </div>
   {#if versusResult}
-    <div class="versus__result">
+    <div class="versus__result" in:fly={{ y: 100, duration: 300 }}>
       <div>{versusResult}</div>
       <button
         class="btn btn--large versus__result__play-again"
