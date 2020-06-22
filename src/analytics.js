@@ -8,7 +8,6 @@ export default function initializeAnalytics() {
       appId: "$FIREBASE_APP_ID$",
     };
 
-    console.log(firebaseConfig);
     // Initialize Firebase
     firebaseConfig.apiKey && firebase && firebase.initializeApp(firebaseConfig);
     firebaseConfig.apiKey && firebase && firebase.analytics();
