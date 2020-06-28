@@ -144,7 +144,7 @@
   <main class="fade-in-animation">
     <Header />
     {#if socketService.socket}
-      {#if true}
+      {#if inGame}
         <Game />
       {:else}
         <Home />
