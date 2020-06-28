@@ -25,9 +25,10 @@
   };
 
   const listenSomeoneLeft = () => {
-    socketService.socket.on(GAME_EVENTS.KICK_PLAYER, response => {
-      gameInfoService.goHome();
-    });
+    $currentPlayerInfo.name !== "" &&
+      socketService.socket.on(GAME_EVENTS.KICK_PLAYER, response => {
+        gameInfoService.goHome();
+      });
   };
 
   onDestroy(async () => {
@@ -36,9 +37,10 @@
 
   window.onbeforeunload = function() {
     const playerInfo = $currentPlayerInfo;
-    socketService.emit(GAME_EVENTS.EXIT_GAME, {
-      room: $game.id
-    });
+    $currentPlayerInfo.name !== "" &&
+      socketService.emit(GAME_EVENTS.EXIT_GAME, {
+        room: $game.id
+      });
   };
 
   socketService.connect();
@@ -87,9 +89,6 @@
     width: 100%;
     max-width: 100%;
     background: var(--background);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: relative;
     font-family: "Barlow Semi Condensed", sans-serif;
   }
