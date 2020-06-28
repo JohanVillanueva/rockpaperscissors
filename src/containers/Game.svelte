@@ -32,7 +32,7 @@
 </style>
 
 <div class="game">
-  {#if $currentPlayerInfo.typePicked && false}
+  {#if $currentPlayerInfo.typePicked}
     <Versus on:playAgain={() => handlePlayAgain()} />
   {:else}
     <Triangle />
