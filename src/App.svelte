@@ -25,10 +25,9 @@
   };
 
   const listenSomeoneLeft = () => {
-    $currentPlayerInfo.name !== "" &&
-      socketService.socket.on(GAME_EVENTS.KICK_PLAYER, response => {
-        gameInfoService.goHome();
-      });
+    socketService.socket.on(GAME_EVENTS.KICK_PLAYER, response => {
+      $currentPlayerInfo.name !== "" && gameInfoService.goHome();
+    });
   };
 
   onDestroy(async () => {
@@ -58,7 +57,7 @@
     --background: linear-gradient(
       to bottom,
       hsl(214, 56%, 17%),
-      hsl(0, 0%, 0%)
+      hsl(243, 100%, 2%)
     );
     --circle-background: #e2e2e2;
     --circle-border-width: 10px;
@@ -115,6 +114,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative;
+    top: -20px;
     width: 100%;
     max-width: 750px;
   }
@@ -143,7 +144,7 @@
   <main class="fade-in-animation">
     <Header />
     {#if socketService.socket}
-      {#if inGame}
+      {#if true}
         <Game />
       {:else}
         <Home />
