@@ -6,6 +6,7 @@
     box-sizing: border-box;
     justify-content: center;
     width: 100%;
+    max-height: 165px;
     font-size: 16px;
     text-align: center;
   }

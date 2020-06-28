@@ -1,3 +1,11 @@
+#app {
+  margin: 0;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .btn {
   border-radius: 5px;
   padding: 12px 24px;
@@ -66,20 +74,23 @@ input.disabled {
   top: unset !important;
   right: auto !important;
   left: auto;
-  min-width: 50% !important;
-  border-top-left-radius: 10px !important;
-  border-bottom-left-radius: 10px !important;
+  max-width: 500px;
 }
 .toasts .toast {
   border-radius: 5px;
   margin: 10px 0 25px !important;
   min-width: 100% !important;
   text-align: center !important;
+  max-width: 500px !important;
+}
+
+.toasts .toast .progress {
+  max-width: 500px !important;
 }
 
 @media screen and (max-width: 550px) {
   .toasts {
-    min-width: 80% !important;
+    min-width: 80vw !important;
   }
 }
 
