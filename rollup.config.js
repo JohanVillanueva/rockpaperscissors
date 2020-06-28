@@ -36,6 +36,7 @@ export default {
       FIREBASE_MEASURE_ID: FIREBASE_MEASURE_ID,
       FIREBASE_API_KEY: FIREBASE_API_KEY,
       FIREBASE_APP_ID: FIREBASE_APP_ID,
+      delimiters: ["$", "$"],
     }),
     // If you have external dependencies installed from
     // npm, you'll most likely need these plugins. In
