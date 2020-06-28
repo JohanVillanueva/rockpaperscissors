@@ -21,17 +21,18 @@
 <style>
   .game {
     width: 100%;
-    height: 100%;
+    height: calc(var(--circle-size) * 2.2);
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 30px;
     margin-bottom: 15px;
     text-align: center;
   }
 </style>
 
 <div class="game">
-  {#if $currentPlayerInfo.typePicked}
+  {#if $currentPlayerInfo.typePicked && false}
     <Versus on:playAgain={() => handlePlayAgain()} />
   {:else}
     <Triangle />
